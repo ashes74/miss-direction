@@ -1,4 +1,4 @@
- var start;
+var start;
 var end;
 
 function initAutocomplete() {
