@@ -78,9 +78,10 @@ function initAutocomplete() {
 
     var infowindow = new google.maps.InfoWindow();
     var service = new google.maps.places.PlacesService(map);
-
+    var placeId;
     document.getElementById('submit').addEventListener('click', function() {
-      placeDetailsByPlaceId(service, map, infowindow);
+      markers = [];
+      placeDetailsByPlaceId(service, map, infowindow, placeId);
     });
 
     // For each place, get the icon, name and location.
@@ -90,13 +91,14 @@ function initAutocomplete() {
         console.log("Returned place contains no geometry");
         return;
       }
+      placeId = place.id;
       var icon = {
         url: "./ic_location_on_black_24px.svg",
-        size: new google.maps.Size(80, 80),
+        size: new google.maps.Size(71, 71),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
         draggable: true,
-        scaledSize: new google.maps.Size(25, 25)
+        scaledSize: new google.maps.Size(30, 30)
       };
 
       console.log('VIEWPORT ', place.geometry.viewport);
@@ -128,6 +130,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   console.log("There is an error with geolocation")
 }
 
+
+///DIRECTIONS
 function getDirections() {
 
   var directionsService = new google.maps.DirectionsService;
@@ -149,11 +153,12 @@ function getDirections() {
 }
 
 
-function placeDetailsByPlaceId(service, map, infowindow) {
+function placeDetailsByPlaceId(service, map, infowindow, placeId) {
   // Create and send the request to obtain details for a specific place,
   // using its Place ID.
+  console.log("placeId", placeId);
   var request = {
-    placeId: document.getElementById('place-id').value
+    placeId: placeId
   };
 
   service.getDetails(request, function (place, status) {
