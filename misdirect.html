@@ -10,12 +10,21 @@
 
   <body>
   	<!-- this is our map! -->
+    <div id="search">
 
-<input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <button class="controls" id = 'misdirect'><i class="material-icons controls">directions</i></button>
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <label for="pac-input" >
+        <!-- <button id = 'misdirect'> -->
+        <i class="material-icons" onclick="getDirections()">directions</i>
+        <!-- </button> -->
+      </label>
+    </div>
 
-    
-    <div id="map"></div>
+
+
+    <div id="map">
+
+    </div>
 
 
     <!-- Map itself (async) -->
@@ -24,7 +33,7 @@
     <!-- Libraries -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFd3lWN2gDqG2PYF6JIJnWpMs5Nbbbiz0&libraries=geometry" defer></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFd3lWN2gDqG2PYF6JIJnWpMs5Nbbbiz0&libraries=places&callback=initAutocomplete" defer></script>
-    
+
 
     <!-- geolocate and search functionality -->
     <script src="./modules/places-search.js"></script>
