@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+     rel="stylesheet">
+  </head>
+
+  <body>
+  	<!-- this is our map! -->
+    <div id="search">
+
+      <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+      <label for="pac-input" >
+        <!-- <button id = 'misdirect'> -->
+        <i id="submit" class="material-icons" onclick="getDirections()">directions</i>
+        <!-- </button> -->
+      </label>
+    </div>
+
+
+
+    <div id="map">
+
+    </div>
+
+
+    <!-- Map itself (async) -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFd3lWN2gDqG2PYF6JIJnWpMs5Nbbbiz0" defer></script>
+
+    <!-- Libraries -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFd3lWN2gDqG2PYF6JIJnWpMs5Nbbbiz0&libraries=geometry" defer></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFd3lWN2gDqG2PYF6JIJnWpMs5Nbbbiz0&libraries=places&callback=initAutocomplete" defer></script>
+
+
+    <!-- geolocate and search functionality -->
+    <script src="./modules/places-search.js"></script>
+
+
+
+    <!-- Directions API key: AIzaSyCPcH6_c_7NW3WXqnNxPmbBZ_-kRZauN_U -->
+
+  </body>
+
+</html>
