@@ -1,29 +1,31 @@
-var start;
+var start = {lat:40.7410986, lng:-73.9888682};
 var end;
+var map;
 
 function initAutocomplete() {
 
-
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -33.8688, lng: 151.2195},
+  //var
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat:40.7410986, lng:-73.9888682},
     zoom: 13
   });
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      start = pos;
+  // if (navigator.geolocation) {
+  //   navigator.geolocation.getCurrentPosition(function(position) {
+  //     var pos = {
+  //       lat: position.coords.latitude,
+  //       lng: position.coords.longitude
+  //     };
+  // start = pos;
+  var pos = start;
 
-      // infoWindow.setPosition(pos);
-      // infoWindow.setContent('Location found.');
-      map.setCenter(pos);
-    }, function() {
-      handleLocationError(true, map.getCenter());
-    });
-  }
+  // infoWindow.setPosition(pos);
+  // infoWindow.setContent('Location found.');
+  map.setCenter(pos);
+  //   }, function() {
+  //     handleLocationError(true, map.getCenter());
+  //   });
+  // }
 
   // Create the search box and link it to the UI element.
   var input = document.getElementById('pac-input');
@@ -74,6 +76,13 @@ function initAutocomplete() {
     });
     markers = [];
 
+    var infowindow = new google.maps.InfoWindow();
+    var service = new google.maps.places.PlacesService(map);
+
+    document.getElementById('submit').addEventListener('click', function() {
+      placeDetailsByPlaceId(service, map, infowindow);
+    });
+
     // For each place, get the icon, name and location.
     var bounds = new google.maps.LatLngBounds();
     places.forEach(function(place) {
@@ -82,10 +91,11 @@ function initAutocomplete() {
         return;
       }
       var icon = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
+        url: "./ic_location_on_black_24px.svg",
+        size: new google.maps.Size(80, 80),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
+        draggable: true,
         scaledSize: new google.maps.Size(25, 25)
       };
 
@@ -109,47 +119,63 @@ function initAutocomplete() {
     map.fitBounds(bounds);
     map.setCenter(end);
 
-    });
+  });
 
 
-  }
+}
 
-  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  console.log("There is an error with geolocation")
+}
 
+function getDirections() {
+
+  var directionsService = new google.maps.DirectionsService;
+  var directionsDisplay = new google.maps.DirectionsRenderer;
+  directionsDisplay.setMap(map);
+  console.log("start", start, "end", end)
+  directionsService.route({
+    origin: new google.maps.LatLng(start),
+    destination: new google.maps.LatLng(end),
+    travelMode: 'TRANSIT'
+  }, function(response, status) {
+    if (status === 'OK') {
+      directionsDisplay.setDirections(response);
+    } else {
+      window.alert('Directions request failed due to ' + status);
     }
+  });
 
-  function getDirections() {
+}
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        start = pos;
 
-        // infoWindow.setPosition(pos);
-        // infoWindow.setContent('Location found.');
-        map.setCenter(pos);
-      }, function() {
-        handleLocationError(true, map.getCenter());
+function placeDetailsByPlaceId(service, map, infowindow) {
+  // Create and send the request to obtain details for a specific place,
+  // using its Place ID.
+  var request = {
+    placeId: document.getElementById('place-id').value
+  };
+
+  service.getDetails(request, function (place, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      // If the request succeeds, draw the place location on the map
+      // as a marker, and register an event to handle a click on the marker.
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
       });
-    }
-    
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-    directionsDisplay.setMap(map);
-    console.log("start", start, "end", end)
-    directionsService.route({
-      origin: new google.maps.LatLng(start),
-      destination: new google.maps.LatLng(end),
-      travelMode: 'DRIVING'
-    }, function(response, status) {
-      if (status === 'OK') {
-        directionsDisplay.setDirections(response);
-      } else {
-        window.alert('Directions request failed due to ' + status);
-      }
-    });
 
-  }
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
+          'Place ID: ' + place.place_id + '<br>' +
+          place.formatted_address + '</div>');
+        infowindow.open(map, this);
+      });
+
+      map.panTo(place.geometry.location);
+    }
+  });
+}
+
+// Run the initialize function when the window has finished loading.
+google.maps.event.addDomListener(window, 'load', initialize);
