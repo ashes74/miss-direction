@@ -1,6 +1,8 @@
+ var start;
+var end;
+
 function initAutocomplete() {
-        var start;
-        var end;
+       
 
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: -33.8688, lng: 151.2195},
@@ -13,7 +15,7 @@ function initAutocomplete() {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
-            start = { lat: position.coords.latitude, lng: position.coords.longitude };
+            start = pos;
 
             // infoWindow.setPosition(pos);
             // infoWindow.setContent('Location found.');
@@ -104,15 +106,14 @@ function initAutocomplete() {
           });
           map.fitBounds(bounds);
           map.setCenter(end);
-        });
 
-        var directionsService = new google.maps.DirectionsService;
+                  var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(map);
-
+        console.log("start", start, "end", end)
         directionsService.route({
-          origin: start,
-          destination: end,
+          origin: new google.maps.LatLng(start),
+          destination: new google.maps.LatLng(end),
           travelMode: 'DRIVING'
         }, function(response, status) {
           if (status === 'OK') {
@@ -121,6 +122,9 @@ function initAutocomplete() {
             window.alert('Directions request failed due to ' + status);
           }
         });
+        });
+
+
       }
 
 
