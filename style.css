@@ -10,6 +10,11 @@ html, body {
 
 .material-icons{
   color: #679df6;
+  color: #679df6;
+  position: absolute;
+  top: 15px;
+  left: 400px;
+  z-index: 1000;
 }
 
 .controls {
@@ -33,6 +38,7 @@ html, body {
   padding: 0 11px 0 13px;
   text-overflow: ellipsis;
   width: 300px;
+
 }
 
 #pac-input:focus {
