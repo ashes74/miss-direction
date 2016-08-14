@@ -183,4 +183,4 @@ function placeDetailsByPlaceId(service, map, infowindow, placeId) {
 }
 
 // Run the initialize function when the window has finished loading.
-google.maps.event.addDomListener(window, 'load', initialize);
+// google.maps.event.addDomListener(window, 'load', initialize);
