@@ -7,16 +7,21 @@ html, body {
 #map {
   height: 100%;
 }
-
+input{
+  height: 70px;
+}
 .material-icons{
   color: #679df6;
   color: #679df6;
+
+}
+#for-search{
   position: absolute;
   top: 15px;
-  left: 400px;
+  left: 390px;
   z-index: 1000;
+  display: flex;
 }
-
 .controls {
   margin-top: 10px;
   border: 1px solid transparent;
@@ -30,6 +35,8 @@ html, body {
 
 
 #pac-input {
+  /*height: 24px !important;*/
+  /*width: 100%;*/
   background-color: #fff;
   font-family: Roboto;
   font-size: 15px;

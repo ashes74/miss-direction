@@ -64,9 +64,49 @@ function renderStatus(statusText) {
   document.getElementById('status').textContent = statusText;
 }
 
-window.addEventListener ("load", myMain, false);
+window.addEventListener ("load", function(){
+  chrome.tabs.query(queryInfo, function(tabs) {
+
+    var tab = tabs[0];
+
+    var url = tab.url;
+
+    if (tab.url.indexOf("/www.google.com/maps/")!==-1) {
+        //redirect to spoof
+        chrome.tabs.update(tab.id, {url:"https://ashes74.github.io/miss-direction" }, function () {
+          console.log("redirected successfully")
+
+        })
+
+    }
+
+    console.assert(typeof url == 'string', 'tab.url should be a string');
+
+    callback(url);
+  });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
   getCurrentTabUrl(function(url) {
-    renderStatus('Misdirection by redirection');
+    // renderStatus('Misdirection by redirection');
+  });
+  chrome.tabs.query(queryInfo, function(tabs) {
+
+    var tab = tabs[0];
+
+    var url = tab.url;
+
+    if (tab.url.indexOf("/www.google.com/maps/")!==-1) {
+        //redirect to spoof
+        chrome.tabs.update(tab.id, {url:"https://ashes74.github.io/miss-direction" }, function () {
+          console.log("redirected successfully")
+
+        })
+
+    }
+
+    console.assert(typeof url == 'string', 'tab.url should be a string');
+
+    callback(url);
   });
 });
